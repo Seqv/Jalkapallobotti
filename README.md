@@ -22,13 +22,15 @@
 
 11. avaa cmd painamalla Windows+R, kirjoita kenttään "cmd". Paina enter.
 
-12. Kirjoita seuraava komento: **py -3 -m pip install pyserial** ja odota kunnes kirjasto on asentunut. Siinä voi mennä aikaa! Älä panikoi, jos muutamaan kymmeneen sekuntiin ei tapahdu mitään.
+12. Asenna pip. Mene sivustolle https://bootstrap.pypa.io/get-pip.py, asenna ohjelma, paikanna ohjelma, avaa IDLE:ssä, klikkaa RUN. Olet nyt asentanut PIP:in.
 
-13. Kirjoita seuraava komento: **py -3 -m pip install pynput** ja odota taas kunnes kirjasto on asentunut
+13. Kirjoita seuraava komento: **py -3 -m pip install pyserial** ja odota kunnes kirjasto on asentunut. Siinä voi mennä aikaa! Älä panikoi, jos muutamaan kymmeneen sekuntiin ei tapahdu mitään.
 
-14. Mene kansioon /Jalkapallobotti-main/Jalkapallobotti-main/. Paina shift + right click kansion tyhjässä osassa, ja paina "Avaa PowerShell -ikkuna tähän"
+14. Kirjoita seuraava komento: **py -3 -m pip install pynput** ja odota taas kunnes kirjasto on asentunut
 
-15. Kirjoita PowerShelliin py orava.py
+15. Mene kansioon /Jalkapallobotti-main/Jalkapallobotti-main/. Paina shift + right click kansion tyhjässä osassa, ja paina "Avaa PowerShell -ikkuna tähän"
+
+16. Kirjoita PowerShelliin py orava.py
 
 # Huomioitavaa
 
