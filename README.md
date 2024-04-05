@@ -39,3 +39,5 @@
 **ÄLÄ ASENNA KIRJASTOA SERIAL!!!! ASENNA KIRJASTO PYSERIAL** 
 
 **JOS ASENSIT VAHINGOSSA PAKETIN SERIAL, SEN VOI POISTAA KOMENNOLLA py -m pip uninstall serial. Pythonin kysyessä "Proceed? (Y/n), paina enter.**
+
+**JOS orava.py:n käynnistettäyssä ilmenee "AttributeError: module 'serial' has no attribute 'Serial', suorita cmd:ssä komento py -3 -m pip install --upgrade --force-reinstall pyserial**
