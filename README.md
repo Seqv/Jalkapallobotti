@@ -36,4 +36,4 @@
 
 **ÄLÄ ASENNA KIRJASTOA SERIAL!!!! ASENNA KIRJASTO PYSERIAL** 
 
-**JOS ASENSIT VAHINGOSSA PAKETIN SERIAL, SEN VOI POISTAA KOMENNOLLA py -m pip uninstall serial. Pythonin kysyessä "Procees? (Y/n), paina enter.**
+**JOS ASENSIT VAHINGOSSA PAKETIN SERIAL, SEN VOI POISTAA KOMENNOLLA py -m pip uninstall serial. Pythonin kysyessä "Proceed? (Y/n), paina enter.**
