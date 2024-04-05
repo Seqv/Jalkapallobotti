@@ -1,10 +1,10 @@
-import serial
+import serial #ASENNA PIPISTÄ KIRJASTO "PYSERIAL" AINA, VAIKKA KOODIN MUKAAN TUOTAISIINKIN SERIAL.
 import time
 from pynput import keyboard
 
 evenement=""
 print("Start")
-port="COMX" #This will be different for various devices and on windows it will probably be a COM port.
+port="COMX" #VAIHDA TÄMÄ ARDUINON PORTIN MUKAAN
 bluetooth=serial.Serial(port, 9600)#Start communications with the bluetooth unit
 print("Connected")
 bluetooth.flushInput() #This gives the bluetooth a little kick
