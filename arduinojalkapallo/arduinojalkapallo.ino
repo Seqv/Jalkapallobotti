@@ -1,70 +1,85 @@
-// connect motor controller pins to Arduino digital pins
-// motor one
-#include <SoftwareSerial.h>
-SoftwareSerial hc06(8,9);
-String cmd="";
-int enA = 2;
-int in1 = 3;
-int in2 = 4;
-// motor two
-int enB = 7;
-int in3 = 5;
-int in4 = 6;
-void setup()
-{
-  //Initialize Serial Monitor
+#include <ArduinoBLE.h>
+#include <ArduinoMotorCarrier.h>
+int arvo;
+
+BLEService keyboardService("181A"); // Keyboard Service UUID
+BLECharacteristic keyboardChar("2A58", BLERead | BLEWrite | BLENotify, 20); // Characteristic for sending keyboard data
+
+void setup() {
   Serial.begin(9600);
-  hc06.begin(9600);
-  // set all the motor control pins to outputs
-  pinMode(enA, OUTPUT);
-  pinMode(enB, OUTPUT);
-  pinMode(in1, OUTPUT);
-  pinMode(in2, OUTPUT);
-  pinMode(in3, OUTPUT);
-  pinMode(in4, OUTPUT);
+  while (!Serial);
 
-  analogWrite(enA, 255);
-  analogWrite(enB, 255); 
-
-}
-
-void loop()
-{ 
-  while(hc06.available()>0){
-  cmd+=(char)hc06.read();
+  if (controller.begin())
+  {
+    Serial.print("MKR Motor Shield connected, firmware version ");
+    Serial.println(controller.getFWVersion());
   }
-  //control speed 
-  //Select function with cmd
-if(cmd!=""){
-Serial.print("Command recieved : ");
-Serial.println(cmd);
-// We expect ON or OFF from bluetooth
-if(cmd=="forward"){
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, LOW);}
-if(cmd=="backwards"){ 
- digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, HIGH);}
-if(cmd=="right"){  
- digitalWrite(in1,HIGH ); 
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);}
-if(cmd=="left"){
- digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, LOW);}
-if(cmd=="stop"){ 
- digitalWrite(in1, LOW); 
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);}
-cmd=""; //reset cmd
+  else
+  {
+    Serial.println("Couldn't connect! Is the red led blinking? You may need to update the firmware with FWUpdater sketch");
+    while (1);
+  }
+
+
+  // Initialize BLE
+  if (!BLE.begin()) {
+    Serial.println("Starting BLE failed!");
+    while (1);
+  }
+
+
+  BLE.setLocalName("kouvolapitaiskylrajayttaa");
+  BLE.setAdvertisedService(keyboardService);
+  keyboardService.addCharacteristic(keyboardChar);
+  BLE.addService(keyboardService);
+  keyboardChar.writeValue((const uint8_t*)("WASD"), 4); // Initial value
+
+  BLE.advertise();
+
+  Serial.println("Bluetooth device active, waiting for connections...");
 }
-delay(100);
-}
+
+void loop() {
+  
+  BLEDevice central = BLE.central();
+  if (central) {
+    Serial.print("Connected to central: ");
+    Serial.println(central.address());
+
+    while (central.connected()) {
+      if (keyboardChar.written()) {
+        const uint8_t* data = keyboardChar.value();
+        String receivedString = "";
+        for (int i = 0; i < keyboardChar.valueLength(); i++) {
+          receivedString += (char)data[i];
+        }
+        Serial.println(receivedString);
+        
+       if(receivedString == "w"){
+      M1.setDuty(100);
+      M2.setDuty(100);
+    }
+    if(receivedString == "s"){
+      M1.setDuty(-100);
+      M2.setDuty(-100);
+    }
+     if(receivedString == "d"){
+      M1.setDuty(80);
+      M2.setDuty(30);
+     }
+     if(receivedString == "a"){
+      M1.setDuty(30);
+      M2.setDuty(80);
+     }
+    if(receivedString == "e"){
+      M1.setDuty(0);
+      M2.setDuty(0);
+     }
+      }
+      delay(100);
+      
+      }
+    }
+    Serial.println("Disconnected from central");
+  }
+  
